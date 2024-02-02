@@ -12,7 +12,9 @@
 -- Close all windows and exit from Neovim with <leader> and q
 vim.keymap.set("n", "<leader>q", ":qa!<CR>", {})
 -- Fast saving with <leader> and s
-vim.keymap.set("n", "<leader>s", ":w<CR>", {})
+vim.keymap.set("n", "<leader>s", ":w!<CR>", {})
+-- remove trailing whitespace
+vim.keymap.set("n", "<leader>rl", ":%s/\r//", {})
 -- Move around splits
 vim.keymap.set("n", "<leader>wh", "<C-w>h", {})
 vim.keymap.set("n", "<leader>wj", "<C-w>j", {})
