@@ -13,8 +13,6 @@
 vim.keymap.set("n", "<leader>q", ":qa!<CR>", {})
 -- Fast saving with <leader> and s
 vim.keymap.set("n", "<leader>s", ":w!<CR>", {})
--- remove trailing whitespace
-vim.keymap.set("n", "<leader>rl", ":%s/\r//", {})
 -- Move around splits
 vim.keymap.set("n", "<leader>wh", "<C-w>h", {})
 vim.keymap.set("n", "<leader>wj", "<C-w>j", {})
@@ -42,4 +40,6 @@ vim.keymap.set("n", "<leader>tt", ":NeotermToggle<CR>", {})
 -- vim.keymap.set("n", "<leader>tx", ":NeotermExit<CR>", {})
 vim.wo.relativenumber = true
 -- find and replace inside current file
+vim.keymap.set("n", "<leader>fr", [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>]])
+vim.keymap.set("n", "<leader>fr", [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>]])
 vim.keymap.set("n", "<leader>fr", [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>]])

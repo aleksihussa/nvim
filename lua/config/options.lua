@@ -22,9 +22,9 @@ cmd([[
 ]])
 
 opt.backspace = { "eol", "start", "indent" } -- allow backspacing over everything in insert mode
-opt.clipboard = "unnamedplus"              -- allow neovim to access the system clipboard
-vim.opt.fileencoding = "utf-8"             -- the encoding written to a file
-opt.encoding = "utf-8"                     -- the encoding
+opt.clipboard = "unnamedplus"                -- allow neovim to access the system clipboard
+vim.opt.fileencoding = "utf-8"               -- the encoding written to a file
+opt.encoding = "utf-8"                       -- the encoding
 opt.matchpairs = { "(:)", "{:}", "[:]", "<:>" }
 opt.syntax = "enable"
 
@@ -117,6 +117,25 @@ for _, plugin in pairs(disabled_built_ins) do
   g["loaded_" .. plugin] = 1
 end
 
--- Colorscheme
--- By default, use rose-pine
+vim.api.nvim_create_autocmd("BufWritePre", {
+  pattern = "*",
+  callback = function()
+    -- Check if the current buffer contains carriage return characters
+    local bufnr = vim.api.nvim_get_current_buf()
+    local lines = vim.api.nvim_buf_get_lines(bufnr, 0, -1, false)
+    local contains_cr = false
+    for _, line in ipairs(lines) do
+      if line:find("\r") then
+        contains_cr = true
+        break
+      end
+    end
+
+    -- If carriage return characters are found, remove them
+    if contains_cr then
+      vim.cmd("%s/\r//g")
+    end
+  end,
+})
+
 cmd.colorscheme("tokyonight")
