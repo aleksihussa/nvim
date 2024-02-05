@@ -45,7 +45,7 @@ return { {
   "neovim/nvim-lspconfig",
   event = { "BufReadPre", "BufNewFile" },
   lazy = true,
-  dependencies = {   -- Mason
+  dependencies = { -- Mason
     -- Portable package manager for Neovim that runs everywhere Neovim runs.
     -- Easily install and manage LSP servers, DAP servers, linters, and formatters.
     { "williamboman/mason.nvim" }, { "williamboman/mason-lspconfig.nvim" }, -- Autocomplete
@@ -96,6 +96,23 @@ return { {
       local server_opts = vim.tbl_deep_extend("force", {
         capabilities = vim.deepcopy(capabilities)
       }, servers[server] or {})
+
+      -- Define an on_attach function for keybindings
+      server_opts.on_attach = function(_, bufnr)
+        -- Example keybinding: map <leader>rn to 'rename' action
+        local keymap_opts = { noremap = true, silent = true }
+
+        vim.api.nvim_buf_set_keymap(bufnr, "n", "gd", "<cmd>lua vim.lsp.buf.definition()<CR>", keymap_opts)
+        vim.api.nvim_buf_set_keymap(bufnr, "n", "K", "<cmd>lua vim.lsp.buf.hover()<CR>", keymap_opts)
+
+        -- -- Call any additional on_attach functions defined in opts.setup
+        -- if opts.setup[server] and opts.setup[server].on_attach then
+        --   opts.setup[server].on_attach(client, bufnr)
+        -- elseif opts.setup["*"] and opts.setup["*"].on_attach then
+        --   opts.setup["*"].on_attach(client, bufnr)
+        -- end
+      end
+      --
 
       if opts.setup[server] then
         if opts.setup[server](server, server_opts) then
@@ -184,7 +201,7 @@ return { {
     end
   },
     { "saadparwaiz1/cmp_luasnip", "hrsh7th/cmp-nvim-lua", "hrsh7th/cmp-nvim-lsp", "hrsh7th/cmp-buffer",
-      "hrsh7th/cmp-path" } },              -- cmp sources plugins
+      "hrsh7th/cmp-path" } }, -- cmp sources plugins
   opts = function()
     local cmp = require "cmp"
 
@@ -257,7 +274,7 @@ return { {
           get_bufnrs = function()
             local buf = vim.api.nvim_get_current_buf()
             local byte_size = vim.api.nvim_buf_get_offset(buf, vim.api.nvim_buf_line_count(buf))
-            if byte_size > 1024 * 1024 then             -- 1 Megabyte max
+            if byte_size > 1024 * 1024 then -- 1 Megabyte max
               return {}
             end
             return { buf }
