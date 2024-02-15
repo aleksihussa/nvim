@@ -107,7 +107,6 @@ opt.undoreload = 10000
 opt.foldmethod = "marker"
 opt.foldlevel = 99
 
-
 -- Disable builtin plugins
 local disabled_built_ins = { "2html_plugin", "getscript", "getscriptPlugin", "gzip", "logipat", "netrw", "netrwPlugin",
   "netrwSettings", "netrwFileHandlers", "matchit", "tar", "tarPlugin", "rrhelper",
