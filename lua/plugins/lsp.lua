@@ -1,15 +1,3 @@
---
--- ███╗   ██╗███████╗ ██████╗ ██╗   ██╗██╗███╗   ███╗
--- ████╗  ██║██╔════╝██╔═══██╗██║   ██║██║████╗ ████║
--- ██╔██╗ ██║█████╗  ██║   ██║██║   ██║██║██╔████╔██║
--- ██║╚██╗██║██╔══╝  ██║   ██║╚██╗ ██╔╝██║██║╚██╔╝██║
--- ██║ ╚████║███████╗╚██████╔╝ ╚████╔╝ ██║██║ ╚═╝ ██║
--- ╚═╝  ╚═══╝╚══════╝ ╚═════╝   ╚═══╝  ╚═╝╚═╝     ╚═╝
---
--- File: plugins/lsp.lua
--- Description: LSP setup and config
--- Author: Kien Nguyen-Tuan <kiennt2609@gmail.com>
--- Enable some language servers with the additional completion capabilities offered by nvim-cmp
 return { {
   -- Mason
   "williamboman/mason.nvim",
@@ -74,7 +62,11 @@ return { {
       ruff_lsp = {},
       vimls = {},
       yamlls = {},
-      tsserver = {}
+      tsserver = {},
+      eslint = {
+        workingDirectories = { { mode = "location" } },
+        validate = "on",
+      },
     },
     -- you can do any additional lsp server setup here
     -- return true if you don"t want this server to be setup with lspconfig
@@ -101,9 +93,31 @@ return { {
       server_opts.on_attach = function(_, bufnr)
         -- Example keybinding: map <leader>rn to 'rename' action
         local keymap_opts = { noremap = true, silent = true }
+        local function goto_definition()
+          local bufnr = vim.api.nvim_get_current_buf()
+          vim.lsp.buf.definition()
+          vim.lsp.buf_request(bufnr, 'textDocument/definition', vim.lsp.util.make_position_params(),
+            function(err, result, ctx, config)
+              if err then
+                vim.notify('Error finding definition: ' .. err.message, vim.log.levels.ERROR)
+                return
+              end
+              if result and #result > 0 then
+                local uri = result[1].uri or result[1].targetUri
+                if uri and not string.find(vim.uri_to_fname(uri), 'node_modules') then
+                  vim.lsp.util.jump_to_location(result[1], 'utf-8', true)
+                else
+                  vim.notify('Definition is in node_modules, ignoring.', vim.log.levels.INFO)
+                end
+              end
+            end)
+        end
 
-        vim.api.nvim_buf_set_keymap(bufnr, "n", "gd", "<cmd>lua vim.lsp.buf.definition()<CR>", keymap_opts)
+        -- Override gd keymap to use custom goto_definition function
+        vim.api.nvim_buf_set_keymap(bufnr, "n", "gd", "", { callback = goto_definition, noremap = true, silent = true })
         vim.api.nvim_buf_set_keymap(bufnr, "n", "K", "<cmd>lua vim.lsp.buf.hover()<CR>", keymap_opts)
+        vim.api.nvim_buf_set_keymap(bufnr, "n", "<leader>ca", "<cmd>lua vim.lsp.buf.code_action()<CR>", keymap_opts)
+        vim.api.nvim_buf_set_keymap(bufnr, "n", "<leader>rr", "<cmd>lua vim.lsp.buf.references()<CR>", keymap_opts)
 
         -- -- Call any additional on_attach functions defined in opts.setup
         -- if opts.setup[server] and opts.setup[server].on_attach then
