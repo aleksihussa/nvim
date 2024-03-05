@@ -118,6 +118,7 @@ return { {
         vim.api.nvim_buf_set_keymap(bufnr, "n", "K", "<cmd>lua vim.lsp.buf.hover()<CR>", keymap_opts)
         vim.api.nvim_buf_set_keymap(bufnr, "n", "<leader>ca", "<cmd>lua vim.lsp.buf.code_action()<CR>", keymap_opts)
         vim.api.nvim_buf_set_keymap(bufnr, "n", "<leader>rr", "<cmd>lua vim.lsp.buf.references()<CR>", keymap_opts)
+        vim.keymap.set("n", "<leader>rn", function() vim.lsp.buf.rename() end, keymap_opts)
 
         -- -- Call any additional on_attach functions defined in opts.setup
         -- if opts.setup[server] and opts.setup[server].on_attach then
