@@ -14,15 +14,18 @@ return { {
   opts = {
     style = "night"
   },
-}, {
-  -- Rose-pine - Soho vibes for Neovim
-  "rose-pine/neovim",
-  name = "rose-pine",
-  opts = {
-    dark_variant = "main"
-  },
-  lazy = true
-}, {
+},
+  { "catppuccin/nvim", name = "catppuccin", priority = 1000 },
+  {
+
+    -- Rose-pine - Soho vibes for Neovim
+    "rose-pine/neovim",
+    name = "rose-pine",
+    opts = {
+      dark_variant = "main"
+    },
+    lazy = true
+  }, {
   -- Github - Github"s Neovim themes
   "projekt0n/github-nvim-theme",
   lazy = true

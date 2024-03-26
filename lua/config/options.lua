@@ -138,4 +138,4 @@ vim.api.nvim_create_autocmd("BufWritePre", {
   end,
 })
 
-cmd.colorscheme("tokyonight")
+cmd.colorscheme("catppuccin")
