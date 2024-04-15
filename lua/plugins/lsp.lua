@@ -166,6 +166,8 @@ return { {
     end
 
     require("mason").setup()
+
+    require('lspconfig').jdtls.setup({})
     require("mason-lspconfig").setup({
       ensure_installed = ensure_installed,
       automatic_installation = true
