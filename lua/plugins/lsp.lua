@@ -167,7 +167,12 @@ return { {
 
     require("mason").setup()
 
-    require('lspconfig').jdtls.setup({})
+    local lspconfig = require("lspconfig")
+    lspconfig.jdtls.setup({})
+    -- require('lspconfig').jdtls.setup({
+    --   root_dir = lspconfig.util.root_pattern("pom.xml", "gradle.build", ".git"),
+    -- })
+
     require("mason-lspconfig").setup({
       ensure_installed = ensure_installed,
       automatic_installation = true
