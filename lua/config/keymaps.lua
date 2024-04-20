@@ -41,9 +41,10 @@ vim.keymap.set("n", "<leader>fr", [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left>
 
 
 local n = "n"
-vim.keymap.set(n, '<leader>dk', function() require('dap').continue() end)
+vim.keymap.set(n, '<leader>dc', function() require('dap').continue() end)
 vim.keymap.set(n, '<leader>dl', function() require('dap').run_last() end)
 vim.keymap.set(n, '<leader>b', function() require('dap').toggle_breakpoint() end)
+vim.keymap.set(n, '<leader>dq', function() require('dapui').close() end)
 
 local dap, dapui = require("dap"), require("dapui")
 dap.listeners.before.attach.dapui_config = function()
