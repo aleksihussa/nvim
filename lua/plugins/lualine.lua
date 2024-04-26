@@ -1,24 +1,10 @@
---
--- ███╗   ██╗███████╗ ██████╗ ██╗   ██╗██╗███╗   ███╗
--- ████╗  ██║██╔════╝██╔═══██╗██║   ██║██║████╗ ████║
--- ██╔██╗ ██║█████╗  ██║   ██║██║   ██║██║██╔████╔██║
--- ██║╚██╗██║██╔══╝  ██║   ██║╚██╗ ██╔╝██║██║╚██╔╝██║
--- ██║ ╚████║███████╗╚██████╔╝ ╚████╔╝ ██║██║ ╚═╝ ██║
--- ╚═╝  ╚═══╝╚══════╝ ╚═════╝   ╚═══╝  ╚═╝╚═╝     ╚═╝
---
--- File: plugins/lualine.lua
--- Description: Pacman config for lualine
--- Author: Kien Nguyen-Tuan <kiennt2609@gmail.com>
--- Credit: shadmansaleh & his evil theme: https://github.com/nvim-lualine/lualine.nvim/blob/master/examples/evil_lualine.lua
 return { {
-  -- Statusline
-  -- A blazing fast and easy to configure neovim statusline plugin written in pure lua.
   "nvim-lualine/lualine.nvim",
   config = function(_)
     local lualine = require("lualine")
     local lualine_require = require("lualine_require")
 
-    function loadcolors()
+    local function loadcolors()
       -- Rose-pine palette
       local rosepine = require("rose-pine.palette")
       local colors = {
@@ -100,7 +86,6 @@ return { {
       end
     }
 
-    -- Config
     local config = {
       options = {
         -- Disable sections and component separators
@@ -149,14 +134,20 @@ return { {
     -- Inserts a component in lualine_c at left section
     local function ins_left(component)
       table.insert(config.sections.lualine_c, component)
+
+      if component ~= "diff" then
+        table.insert(config.inactive_sections.lualine_c, component)
+      end
     end
 
     -- Inserts a component in lualine_x ot right section
     local function ins_right(component)
       table.insert(config.sections.lualine_x, component)
+
+      if component ~= "diff" then
+        table.insert(config.inactive_sections.lualine_x, component)
+      end
     end
-
-
 
     ins_left {
       "branch",
@@ -167,30 +158,6 @@ return { {
       }
     }
 
-    ins_left {
-      "diff",
-      -- Is it me or the symbol for modified us really weird
-      symbols = {
-        added = " ",
-        modified = " ",
-        removed = " "
-      },
-      diff_color = {
-        added = {
-          fg = colors.green
-        },
-        modified = {
-          fg = colors.yellow
-        },
-        removed = {
-          fg = colors.red
-        }
-      },
-      cond = conditions.hide_in_width
-    }
-
-    -- Insert mid section. You can make any number of sections in neovim :)
-    -- for lualine it"s any number greater then 2
     ins_left { function()
       return "%="
     end }
