@@ -1,22 +1,13 @@
---
--- ███╗   ██╗███████╗ ██████╗ ██╗   ██╗██╗███╗   ███╗
--- ████╗  ██║██╔════╝██╔═══██╗██║   ██║██║████╗ ████║
--- ██╔██╗ ██║█████╗  ██║   ██║██║   ██║██║██╔████╔██║
--- ██║╚██╗██║██╔══╝  ██║   ██║╚██╗ ██╔╝██║██║╚██╔╝██║
--- ██║ ╚████║███████╗╚██████╔╝ ╚████╔╝ ██║██║ ╚═╝ ██║
--- ╚═╝  ╚═══╝╚══════╝ ╚═════╝   ╚═══╝  ╚═╝╚═╝     ╚═╝
---
-return { {
-  -- Tokyonight- A clean, dark Neovim theme written in Lua, with support for lsp,
-  -- treesitter and lots of plugins. Includes additional themes for Kitty, Alacritty, iTerm and Fish.
-  "folke/tokyonight.nvim",
-  name = "tokyonight",
-  opts = {
-    style = "night",
-    transparent_background = true
+return {
+  {
+    "folke/tokyonight.nvim",
+    name = "tokyonight",
+    opts = {
+      style = "night",
+      transparent_background = true
 
+    },
   },
-},
   {
     "catppuccin/nvim",
     name = "catppuccin",
@@ -24,6 +15,7 @@ return { {
     opts = {
       transparent_background = true }
   },
+  lazy = true,
   {
 
     -- Rose-pine - Soho vibes for Neovim
@@ -33,8 +25,10 @@ return { {
       dark_variant = "main"
     },
     lazy = true
-  }, {
-  -- Github - Github"s Neovim themes
-  "projekt0n/github-nvim-theme",
-  lazy = true
-} }
+  },
+  {
+    -- Github - Github"s Neovim themes
+    "projekt0n/github-nvim-theme",
+    lazy = true
+  }
+}

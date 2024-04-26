@@ -19,6 +19,5 @@ return {
       vim.keymap.set("n", "<C-m>", function() harpoon:list():next() end)
     end,
 
-
   }
 }
