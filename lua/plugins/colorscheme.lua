@@ -12,7 +12,9 @@ return { {
   "folke/tokyonight.nvim",
   name = "tokyonight",
   opts = {
-    style = "night"
+    style = "night",
+    transparent_background = true
+
   },
 },
   {
