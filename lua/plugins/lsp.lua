@@ -85,60 +85,62 @@ return { {
     local capabilities = require("cmp_nvim_lsp").default_capabilities(vim.lsp.protocol.make_client_capabilities())
 
     local function setup(server)
-      local server_opts = vim.tbl_deep_extend("force", {
-        capabilities = vim.deepcopy(capabilities)
-      }, servers[server] or {})
+      if server ~= "jdtls" then
+        local server_opts = vim.tbl_deep_extend("force", {
+          capabilities = vim.deepcopy(capabilities)
+        }, servers[server] or {})
 
-      -- Define an on_attach function for keybindings
-      server_opts.on_attach = function(_, bufnr)
-        -- Example keybinding: map <leader>rn to 'rename' action
-        local keymap_opts = { noremap = true, silent = true }
-        local function goto_definition()
-          local bufnr = vim.api.nvim_get_current_buf()
-          vim.lsp.buf.definition()
-          vim.lsp.buf_request(bufnr, 'textDocument/definition', vim.lsp.util.make_position_params(),
-            function(err, result, ctx, config)
-              if err then
-                vim.notify('Error finding definition: ' .. err.message, vim.log.levels.ERROR)
-                return
-              end
-              if result and #result > 0 then
-                local uri = result[1].uri or result[1].targetUri
-                if uri and not string.find(vim.uri_to_fname(uri), 'node_modules') then
-                  vim.lsp.util.jump_to_location(result[1], 'utf-8', true)
-                else
-                  vim.notify('Definition is in node_modules, ignoring.', vim.log.levels.INFO)
+        -- Define an on_attach function for keybindings
+        server_opts.on_attach = function(_, bufnr)
+          -- Example keybinding: map <leader>rn to 'rename' action
+          local keymap_opts = { noremap = true, silent = true }
+          local function goto_definition()
+            local bufnr = vim.api.nvim_get_current_buf()
+            vim.lsp.buf.definition()
+            vim.lsp.buf_request(bufnr, 'textDocument/definition', vim.lsp.util.make_position_params(),
+              function(err, result, ctx, config)
+                if err then
+                  vim.notify('Error finding definition: ' .. err.message, vim.log.levels.ERROR)
+                  return
                 end
-              end
-            end)
+                if result and #result > 0 then
+                  local uri = result[1].uri or result[1].targetUri
+                  if uri and not string.find(vim.uri_to_fname(uri), 'node_modules') then
+                    vim.lsp.util.jump_to_location(result[1], 'utf-8', true)
+                  else
+                    vim.notify('Definition is in node_modules, ignoring.', vim.log.levels.INFO)
+                  end
+                end
+              end)
+          end
+
+          -- Override gd keymap to use custom goto_definition function
+          vim.api.nvim_buf_set_keymap(bufnr, "n", "gd", "", { callback = goto_definition, noremap = true, silent = true })
+          vim.api.nvim_buf_set_keymap(bufnr, "n", "K", "<cmd>lua vim.lsp.buf.hover()<CR>", keymap_opts)
+          vim.api.nvim_buf_set_keymap(bufnr, "n", "<leader>a", "<cmd>lua vim.lsp.buf.code_action()<CR>", keymap_opts)
+          vim.api.nvim_buf_set_keymap(bufnr, "n", "<leader>rr", "<cmd>lua vim.lsp.buf.references()<CR>", keymap_opts)
+          vim.keymap.set("n", "<leader>rn", function() vim.lsp.buf.rename() end, keymap_opts)
+
+          -- -- Call any additional on_attach functions defined in opts.setup
+          -- if opts.setup[server] and opts.setup[server].on_attach then
+          --   opts.setup[server].on_attach(client, bufnr)
+          -- elseif opts.setup["*"] and opts.setup["*"].on_attach then
+          --   opts.setup["*"].on_attach(client, bufnr)
+          -- end
         end
+        --
 
-        -- Override gd keymap to use custom goto_definition function
-        vim.api.nvim_buf_set_keymap(bufnr, "n", "gd", "", { callback = goto_definition, noremap = true, silent = true })
-        vim.api.nvim_buf_set_keymap(bufnr, "n", "K", "<cmd>lua vim.lsp.buf.hover()<CR>", keymap_opts)
-        vim.api.nvim_buf_set_keymap(bufnr, "n", "<leader>ca", "<cmd>lua vim.lsp.buf.code_action()<CR>", keymap_opts)
-        vim.api.nvim_buf_set_keymap(bufnr, "n", "<leader>rr", "<cmd>lua vim.lsp.buf.references()<CR>", keymap_opts)
-        vim.keymap.set("n", "<leader>rn", function() vim.lsp.buf.rename() end, keymap_opts)
-
-        -- -- Call any additional on_attach functions defined in opts.setup
-        -- if opts.setup[server] and opts.setup[server].on_attach then
-        --   opts.setup[server].on_attach(client, bufnr)
-        -- elseif opts.setup["*"] and opts.setup["*"].on_attach then
-        --   opts.setup["*"].on_attach(client, bufnr)
-        -- end
+        if opts.setup[server] then
+          if opts.setup[server](server, server_opts) then
+            return
+          end
+        elseif opts.setup["*"] then
+          if opts.setup["*"](server, server_opts) then
+            return
+          end
+        end
+        require("lspconfig")[server].setup(server_opts)
       end
-      --
-
-      if opts.setup[server] then
-        if opts.setup[server](server, server_opts) then
-          return
-        end
-      elseif opts.setup["*"] then
-        if opts.setup["*"](server, server_opts) then
-          return
-        end
-      end
-      require("lspconfig")[server].setup(server_opts)
     end
 
     -- temp fix for lspconfig rename
@@ -166,12 +168,6 @@ return { {
     end
 
     require("mason").setup()
-
-    local lspconfig = require("lspconfig")
-    lspconfig.jdtls.setup({})
-    -- require('lspconfig').jdtls.setup({
-    --   root_dir = lspconfig.util.root_pattern("pom.xml", "gradle.build", ".git"),
-    -- })
 
     require("mason-lspconfig").setup({
       ensure_installed = ensure_installed,

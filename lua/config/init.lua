@@ -11,13 +11,20 @@
 -- Author: Kien Nguyen-Tuan <kiennt2609@gmail.com>
 -- Lazy.nvim
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
-if not vim.loop.fs_stat(lazypath) then
-  vim.fn.system(
-    { "git", "clone", "--filter=blob:none", "https://github.com/folke/lazy.nvim.git", "--branch=stable",    -- latest stable release
-      lazypath })
+if not (vim.uv or vim.loop).fs_stat(lazypath) then
+  local lazyrepo = "https://github.com/folke/lazy.nvim.git"
+  local out = vim.fn.system({ "git", "clone", "--filter=blob:none", "--branch=stable", lazyrepo, lazypath })
+  if vim.v.shell_error ~= 0 then
+    vim.api.nvim_echo({
+      { "Failed to clone lazy.nvim:\n", "ErrorMsg" },
+      { out,                            "WarningMsg" },
+      { "\nPress any key to exit..." },
+    }, true, {})
+    vim.fn.getchar()
+    os.exit(1)
+  end
 end
 vim.opt.rtp:prepend(lazypath)
-
 vim.g.mapleader = " "
 vim.opt.termguicolors = true -- enable 24-bit RGB colors
 
@@ -36,11 +43,11 @@ if ok then
 end
 
 require("lazy").setup({
-  root = vim.fn.stdpath("data") .. "/lazy",                   -- directory where plugins will be installed
+  root = vim.fn.stdpath("data") .. "/lazy",                 -- directory where plugins will be installed
   spec = spec,
-  lockfile = vim.fn.stdpath("config") .. "/lazy-lock.json",   -- lockfile generated after running update.
+  lockfile = vim.fn.stdpath("config") .. "/lazy-lock.json", -- lockfile generated after running update.
   defaults = {
-    lazy = false,                                             -- should plugins be lazy-loaded?
+    lazy = false,                                           -- should plugins be lazy-loaded?
     version = nil
     -- version = "*", -- enable this to try installing the latest stable versions of plugins
   },
@@ -71,7 +78,7 @@ require("lazy").setup({
       enabled = true
     }
   },
-  state = vim.fn.stdpath("state") .. "/lazy/state.json"   -- state info for checker and other things
+  state = vim.fn.stdpath("state") .. "/lazy/state.json" -- state info for checker and other things
 })
 
 local modules = { "config.autocmds", "config.options", "config.keymaps", "config.custom" }

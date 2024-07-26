@@ -25,7 +25,7 @@ vim.keymap.set("n", "<leader>fp", builtin.git_files, {})  -- git files
 vim.keymap.set("n", "<leader>fg", builtin.live_grep, {})
 vim.keymap.set("n", "<leader>fb", builtin.buffers, {})
 vim.keymap.set("n", "<leader>fh", builtin.help_tags, {})
-vim.keymap.set("n", "<leader>xx", function() require("trouble").toggle() end)
+vim.keymap.set("n", "<leader>xx", function() require("trouble").toggle("diagnostics") end)
 vim.keymap.set("n", "<leader>gg", ":LazyGit<CR>", {})
 -- NvimTree
 vim.keymap.set("n", "<leader>n", ":NvimTreeToggle<CR>", {})    -- open/close
