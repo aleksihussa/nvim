@@ -13,9 +13,9 @@ return {
     name = "catppuccin",
     priority = 1000,
     opts = {
-      transparent_background = true }
+      -- transparent_background = true
+    }
   },
-  lazy = true,
   {
 
     -- Rose-pine - Soho vibes for Neovim
@@ -25,6 +25,11 @@ return {
       dark_variant = "main"
     },
     lazy = true
+  },
+  {
+    "sainnhe/everforest",
+    name = "everforest",
+    lazy = true,
   },
   {
     -- Github - Github"s Neovim themes
