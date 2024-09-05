@@ -62,10 +62,9 @@ return { {
       ruff_lsp = {},
       vimls = {},
       yamlls = {},
-      tsserver = {},
       eslint = {
-        workingDirectories = { { mode = "location" } },
-        validate = "on",
+        -- workingDirectories = { { mode = "location" } },
+        -- validate = "on",
       },
     },
     -- you can do any additional lsp server setup here

@@ -36,7 +36,7 @@ return { {
           stdin = true
         }
       end },
-      rust = {       -- Rustfmt
+      rust = { -- Rustfmt
         function()
           return {
             exe = "rustfmt",
@@ -44,7 +44,7 @@ return { {
             stdin = true
           }
         end },
-      swift = {       -- Swiftlint
+      swift = { -- Swiftlint
         function()
           return {
             exe = "swift-format",
@@ -72,8 +72,10 @@ return { {
         -- require('formatter.filetypes.any').remove_trailing_whitespace
       }
     }
-    local commonFT = { "css", "scss", "html", "java", "javascript", "javascriptreact", "typescript",
-      "typescriptreact", "markdown", "markdown.mdx", "json", "yaml", "xml", "svg", "svelte" }
+    -- original
+    -- local commonFT = { "css", "scss", "html", "java", "javascript", "javascriptreact", "typescript",
+    --   "typescriptreact", "markdown", "markdown.mdx", "json", "yaml", "xml", "svg", "svelte" }
+    local commonFT = { "css", "scss", "html", "markdown", "markdown.mdx", "json", "yaml", "xml", "svg", "svelte" }
     for _, ft in ipairs(commonFT) do
       formatterConfig[ft] = { prettierConfig }
     end
@@ -89,10 +91,10 @@ return { {
   config = function()
     local lint = require("lint")
     lint.linters_by_ft = {
-      javascript = { "eslint_d" },
-      typescript = { "eslint_d" },
-      javascriptreact = { "eslint_d" },
-      typescriptreact = { "eslint_d" },
+      -- javascript = { "eslint_d" },
+      -- typescript = { "eslint_d" },
+      -- javascriptreact = { "eslint_d" },
+      -- typescriptreact = { "eslint_d" },
       markdown = { "vale" }
     }
   end
