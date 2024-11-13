@@ -18,6 +18,8 @@ return {
       on_attach = function(_, bufnr)
         vim.api.nvim_buf_set_keymap(bufnr, "n", "gd", "<cmd>lua vim.lsp.buf.definition()<CR>",
           { noremap = true, silent = true })
+
+        vim.api.nvim_set_keymap("n", "<A-f>", ":!mvn spotless:apply<CR>", { noremap = true, silent = true })
         vim.api.nvim_buf_set_keymap(bufnr, "n", "K", "<cmd>lua vim.lsp.buf.hover()<CR>", keymap_opts)
         vim.api.nvim_buf_set_keymap(bufnr, "n", "<leader>a", "<cmd>lua vim.lsp.buf.code_action()<CR>", keymap_opts)
         vim.api.nvim_buf_set_keymap(bufnr, "n", "<leader>rr", "<cmd>lua vim.lsp.buf.references()<CR>", keymap_opts)
@@ -26,3 +28,4 @@ return {
     })
   end,
 }
+
