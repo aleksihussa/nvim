@@ -35,8 +35,23 @@ autocmd("BufWritePre", {
 -- Auto format on save using the attached (optionally filtered) language servere clients
 -- https://neovim.io/doc/user/lsp.html#vim.lsp.buf.format()
 autocmd("BufWritePre", {
-  pattern = "",
-  command = ":silent lua vim.lsp.buf.format()"
+  callback = function()
+    -- Get the current file type
+    local filetype = vim.bo.filetype
+
+    -- Exclude Java files
+    if filetype == "java" then
+      return
+    end
+
+    -- Run formatting for other filetypes
+    vim.lsp.buf.format({
+      filter = function(client)
+        return true -- Apply to all available LSP formatters (or filter as needed)
+      end,
+      async = false,
+    })
+  end,
 })
 
 -- Don"t auto commenting new lines

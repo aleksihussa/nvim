@@ -13,7 +13,30 @@ return {
     name = "catppuccin",
     priority = 1000,
     opts = {
-      -- transparent_background = true
+      transparent_background = true, -- Keep transparency if you want
+      integrations = {
+        native_lsp = {
+          enabled = true,
+          underlines = {
+            errors = { "undercurl" },
+            hints = { "underline" },
+            warnings = { "underline" },
+            information = { "underline" },
+          },
+          float = {
+            border = "rounded",
+            highlight = "NormalFloat",
+          }
+        }
+      },
+      highlight_overrides = {
+        all = function(colors)
+          return {
+            NormalFloat = { bg = colors.base }, -- Change to another color if needed
+            FloatBorder = { fg = colors.mauve, bg = colors.base },
+          }
+        end
+      }
     }
   },
   {
