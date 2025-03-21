@@ -1,18 +1,20 @@
 return {
   "nvim-java/nvim-java",
   config = function()
-    vim.api.nvim_set_keymap("n", "<leader>tr", "<cmd>lua require('java').test.view_last_report()<CR>",
-      { noremap = true, silent = true })
 
     require("java").setup({
       jdk = {
         auto_install = false
       },
-      cmd = { "jdtls" }
+      root_markers = {
+        '.git',
+      },
     })
     local keymap_opts = { noremap = true, silent = true }
     require("lspconfig").jdtls.setup({
       on_attach = function(_, bufnr)
+    vim.api.nvim_set_keymap("n", "<leader>tr", "<cmd>lua require('java').test.view_last_report()<CR>",
+      { noremap = true, silent = true })
         vim.api.nvim_buf_set_keymap(bufnr, "n", "gd", "<cmd>lua vim.lsp.buf.definition()<CR>",
           { noremap = true, silent = true })
 
