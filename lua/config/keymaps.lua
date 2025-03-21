@@ -1,15 +1,3 @@
---
--- ███╗   ██╗███████╗ ██████╗ ██╗   ██╗██╗███╗   ███╗
--- ████╗  ██║██╔════╝██╔═══██╗██║   ██║██║████╗ ████║
--- ██╔██╗ ██║█████╗  ██║   ██║██║   ██║██║██╔████╔██║
--- ██║╚██╗██║██╔══╝  ██║   ██║╚██╗ ██╔╝██║██║╚██╔╝██║
--- ██║ ╚████║███████╗╚██████╔╝ ╚████╔╝ ██║██║ ╚═╝ ██║
--- ╚═╝  ╚═══╝╚══════╝ ╚═════╝   ╚═══╝  ╚═╝╚═╝     ╚═╝
---
--- File: config/keymaps.lua
--- Description: Key mapping configs
--- Author: Kien Nguyen-Tuan <kiennt2609@gmail.com>
--- Close all windows and exit from Neovim with <leader> and q
 vim.keymap.set("n", "<leader>q", ":qa!<CR>", {})
 -- Fast saving with <leader> and s
 vim.keymap.set("n", "<leader>s", ":w!<CR>", {})
