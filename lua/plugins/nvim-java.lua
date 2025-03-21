@@ -1,11 +1,8 @@
 return {
   "nvim-java/nvim-java",
   config = function()
-    --crete a keymap to go to definition
-    --add keymap for this: require('java').test.view_last_report()
     vim.api.nvim_set_keymap("n", "<leader>tr", "<cmd>lua require('java').test.view_last_report()<CR>",
       { noremap = true, silent = true })
-
 
     require("java").setup({
       jdk = {
@@ -28,4 +25,3 @@ return {
     })
   end,
 }
-

@@ -1,15 +1,3 @@
---
--- ███╗   ██╗███████╗ ██████╗ ██╗   ██╗██╗███╗   ███╗
--- ████╗  ██║██╔════╝██╔═══██╗██║   ██║██║████╗ ████║
--- ██╔██╗ ██║█████╗  ██║   ██║██║   ██║██║██╔████╔██║
--- ██║╚██╗██║██╔══╝  ██║   ██║╚██╗ ██╔╝██║██║╚██╔╝██║
--- ██║ ╚████║███████╗╚██████╔╝ ╚████╔╝ ██║██║ ╚═╝ ██║
--- ╚═╝  ╚═══╝╚══════╝ ╚═════╝   ╚═══╝  ╚═╝╚═╝     ╚═╝
---
--- File: config/init.lua
--- Description: Main configurations
--- Author: Kien Nguyen-Tuan <kiennt2609@gmail.com>
--- Lazy.nvim
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not (vim.uv or vim.loop).fs_stat(lazypath) then
   local lazyrepo = "https://github.com/folke/lazy.nvim.git"
@@ -26,51 +14,34 @@ if not (vim.uv or vim.loop).fs_stat(lazypath) then
 end
 vim.opt.rtp:prepend(lazypath)
 vim.g.mapleader = " "
-vim.opt.termguicolors = true -- enable 24-bit RGB colors
+vim.opt.termguicolors = true
 
--- build spec
-local spec = { {
-  import = "plugins"
-} }
-
-local ok, err = pcall(require, "plugins.custom")
-if ok then
-  spec = { {
-    import = "plugins"
-  }, {
-    import = "plugins.custom"
-  } }
-end
 
 require("lazy").setup({
-  root = vim.fn.stdpath("data") .. "/lazy",                 -- directory where plugins will be installed
-  spec = spec,
-  lockfile = vim.fn.stdpath("config") .. "/lazy-lock.json", -- lockfile generated after running update.
+  root = vim.fn.stdpath("data") .. "/lazy",
+  spec = { {
+    import = "plugins"
+  } },
+  lockfile = vim.fn.stdpath("config") .. "/lazy-lock.json",
   defaults = {
-    lazy = false,                                           -- should plugins be lazy-loaded?
+    lazy = false,
+    -- Don't automatically install new plugin versions
     version = nil
-    -- version = "*", -- enable this to try installing the latest stable versions of plugins
   },
   install = {
-    -- install missing plugins on startup
     missing = true,
     -- try to load one of these colorschemes when starting an installation during startup
-    colorscheme = { "tokyonight", "habamax" }
+    colorscheme = { "catppuccin", "default" }
   },
   checker = {
     -- automatically check for plugin updates
     enabled = true,
-    -- get a notification when new updates are found
-    -- disable it as it's too annoying
+    -- don't notify about new updates
     notify = false,
-    -- check for updates every day
     frequency = 86400
   },
   change_detection = {
-    -- automatically check for config file changes and reload the ui
     enabled = true,
-    -- get a notification when changes are found
-    -- disable it as it's too annoying
     notify = false
   },
   performance = {
@@ -78,15 +49,11 @@ require("lazy").setup({
       enabled = true
     }
   },
-  state = vim.fn.stdpath("state") .. "/lazy/state.json" -- state info for checker and other things
+  state = vim.fn.stdpath("state") .. "/lazy/state.json"
 })
 
-local modules = { "config.autocmds", "config.options", "config.keymaps", "config.custom" }
+local modules = { "config.autocmds", "config.options", "config.keymaps" }
 
 for _, mod in ipairs(modules) do
-  local ok, err = pcall(require, mod)
-  -- config.custom may be empty. It's a optional module
-  if not ok and not mod == "config/custom" then
-    error(("Error loading %s...\n\n%s"):format(mod, err))
-  end
+  pcall(require, mod)
 end

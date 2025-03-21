@@ -1,41 +1,23 @@
---
--- ███╗   ██╗███████╗ ██████╗ ██╗   ██╗██╗███╗   ███╗
--- ████╗  ██║██╔════╝██╔═══██╗██║   ██║██║████╗ ████║
--- ██╔██╗ ██║█████╗  ██║   ██║██║   ██║██║██╔████╔██║
--- ██║╚██╗██║██╔══╝  ██║   ██║╚██╗ ██╔╝██║██║╚██╔╝██║
--- ██║ ╚████║███████╗╚██████╔╝ ╚████╔╝ ██║██║ ╚═╝ ██║
--- ╚═╝  ╚═══╝╚══════╝ ╚═════╝   ╚═══╝  ╚═╝╚═╝     ╚═╝
---
--- File: config/options.lua
--- Description: General Neovim settings and configuration
--- Author: Kien Nguyen-Tuan <kiennt2609@gmail.com>
 local cmd = vim.cmd
--- Set options (global/buffer/windows-scoped)
 local opt = vim.opt
--- Global variables
 local g = vim.g
 local s = vim.s
 local indent = 2
 
-cmd([[
-	filetype plugin indent on
-]])
-
-opt.backspace = { "eol", "start", "indent" } -- allow backspacing over everything in insert mode
-opt.clipboard = "unnamedplus"                -- allow neovim to access the system clipboard
-vim.opt.fileencoding = "utf-8"               -- the encoding written to a file
-opt.encoding = "utf-8"                       -- the encoding
+opt.backspace = { "eol", "start", "indent" }
+opt.clipboard = "unnamedplus"
+vim.opt.fileencoding = "utf-8"
+opt.encoding = "utf-8"
 opt.matchpairs = { "(:)", "{:}", "[:]", "<:>" }
 opt.syntax = "enable"
 
--- indention
-opt.autoindent = true    -- auto indentation
-opt.expandtab = true     -- convert tabs to spaces
-opt.shiftwidth = indent  -- the number of spaces inserted for each indentation
-opt.smartindent = true   -- make indenting smarter
-opt.softtabstop = indent -- when hitting <BS>, pretend like a tab is removed, even if spaces
-opt.tabstop = indent     -- insert 2 spaces for a tab
-opt.shiftround = true    -- use multiple of shiftwidth when indenting with "<" and ">"
+opt.autoindent = true
+opt.expandtab = true
+opt.shiftwidth = indent
+opt.smartindent = true
+opt.softtabstop = indent
+opt.tabstop = indent
+opt.shiftround = true -- use multiple of shiftwidth when indenting with "<" and ">"
 
 -- search
 opt.hlsearch = true   -- highlight all matches on previous search pattern
@@ -116,26 +98,5 @@ local disabled_built_ins = { "2html_plugin", "getscript", "getscriptPlugin", "gz
 for _, plugin in pairs(disabled_built_ins) do
   g["loaded_" .. plugin] = 1
 end
-
-vim.api.nvim_create_autocmd("BufWritePre", {
-  pattern = "*",
-  callback = function()
-    -- Check if the current buffer contains carriage return characters
-    local bufnr = vim.api.nvim_get_current_buf()
-    local lines = vim.api.nvim_buf_get_lines(bufnr, 0, -1, false)
-    local contains_cr = false
-    for _, line in ipairs(lines) do
-      if line:find("\r") then
-        contains_cr = true
-        break
-      end
-    end
-
-    -- If carriage return characters are found, remove them
-    if contains_cr then
-      vim.cmd("%s/\r//g")
-    end
-  end,
-})
 
 cmd.colorscheme("catppuccin")

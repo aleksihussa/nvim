@@ -5,7 +5,6 @@ return {
     opts = {
       style = "night",
       transparent_background = true
-
     },
   },
   {
@@ -13,7 +12,7 @@ return {
     name = "catppuccin",
     priority = 1000,
     opts = {
-      transparent_background = true, -- Keep transparency if you want
+      transparent_background = true,
       integrations = {
         native_lsp = {
           enabled = true,

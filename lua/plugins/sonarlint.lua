@@ -9,7 +9,6 @@ return { {
           "sonarlint-language-server",
           "-stdio",
           "-analyzers",
-          -- Use the correct path based on your screenshot
           vim.fn.stdpath("data") .. "/mason/packages/sonarlint-language-server/extension/analyzers/sonarjava.jar",
         },
       },
@@ -17,7 +16,7 @@ return { {
       settings = {
         sonarlint = {
           rules = {
-            ["java:*"] = { level = "on" }, -- Enable all Java rules dynamically
+            ["java:*"] = { level = "on" }, -- Enable all
           }
         }
       },

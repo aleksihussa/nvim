@@ -22,7 +22,7 @@ return { {
       suggestion = {
         enabled = true,
         auto_trigger = true,
-        debounce = 75,
+        debounce = 70,
         keymap = {
           accept = "<M-l>",
           accept_word = false,
