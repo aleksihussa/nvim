@@ -86,8 +86,11 @@ opt.undolevels = 1000
 opt.undoreload = 10000
 
 -- fold
-opt.foldmethod = "marker"
-opt.foldlevel = 99
+vim.o.foldmethod = "expr"
+vim.o.foldexpr = "nvim_treesitter#foldexpr()"
+vim.o.foldlevel = 99 -- so folds are open by default
+vim.o.foldlevelstart = 99
+vim.o.foldenable = true
 
 -- Disable builtin plugins
 local disabled_built_ins = { "2html_plugin", "getscript", "getscriptPlugin", "gzip", "logipat", "netrw", "netrwPlugin",
