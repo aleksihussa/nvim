@@ -79,6 +79,16 @@ return { {
     }
   },
   config = function(_, opts)
+    vim.diagnostic.config({
+      virtual_text = {
+        spacing = 4,
+        prefix = "●", -- Could be '●', '▎', '■', etc.
+      },
+      signs = true,
+      underline = true,
+      update_in_insert = false,
+      severity_sort = true,
+    })
     local servers = opts.servers
     local capabilities = require("cmp_nvim_lsp").default_capabilities(vim.lsp.protocol.make_client_capabilities())
 
