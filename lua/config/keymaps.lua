@@ -19,8 +19,11 @@ vim.keymap.set(n, "<leader>n", ":NvimTreeToggle<CR>", {})
 
 -- Terminal
 vim.wo.relativenumber = true
--- find and replace inside current file
-vim.keymap.set(n, "<leader>fr", [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>]])
+-- Find and replace in current file
+vim.keymap.set("n", "<leader>fr", [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>]])
+
+-- Find and replace in quickfix-listed files
+vim.keymap.set("n", "<leader>FA", [[:cdo %s/\<<C-r><C-w>\>/<C-r><C-w>/gI | update<Left><Left><Left><Left><Left><Left><Left><Left><Left><Left><Left><Left>]])
 
 
 vim.keymap.set(n, '<leader>dc', function() require('dap').continue() end)

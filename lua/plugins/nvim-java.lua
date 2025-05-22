@@ -6,6 +6,9 @@ return {
       jdk = {
         auto_install = false
       },
+			jdtls = {
+				version = "1.46.1",
+			},
       root_markers = {
         '.git',
       },
