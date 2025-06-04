@@ -15,7 +15,15 @@ autocmd("BufWritePre", {
   command = ":%s/\\s\\+$//e"
 })
 
-autocmd("BufWritePre", {
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = "sql",
+  callback = function()
+    vim.bo.omnifunc = "v:lua.vim.lsp.omnifunc"
+  end,
+})
+
+
+vim.api.nvim_create_autocmd("BufWritePre", {
   callback = function()
     local filetype = vim.bo.filetype
 
@@ -25,10 +33,11 @@ autocmd("BufWritePre", {
     end
 
     vim.lsp.buf.format({
-      filter = function()
-        return true
-      end,
       async = false,
+      filter = function(client)
+        -- Exclude ESLint from formatting
+        return client.name ~= "eslint"
+      end,
     })
   end,
 })

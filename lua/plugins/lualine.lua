@@ -93,19 +93,16 @@ return { {
         section_separators = "",
         disabled_filetypes = { "Lazy", "NvimTree" },
         theme = {
-          -- We are going to use lualine_c an lualine_x as left and
-          -- right section. Both are highlighted by c theme .  So we
-          -- are just setting default looks o statusline
           normal = {
             c = {
               fg = colors.fg,
-              bg = colors.bg
+              bg = nil, -- Transparent background
             }
           },
           inactive = {
             c = {
               fg = colors.fg,
-              bg = colors.bg
+              bg = nil, -- Transparent background
             }
           }
         }
@@ -130,7 +127,6 @@ return { {
         lualine_x = {}
       }
     }
-
     -- Inserts a component in lualine_c at left section
     local function ins_left(component)
       table.insert(config.sections.lualine_c, component)
