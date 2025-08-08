@@ -4,7 +4,7 @@ return {
     "nvim-lua/plenary.nvim",
     "nvim-telescope/telescope.nvim",
     "mfussenegger/nvim-jdtls",
-    "williamboman/mason.nvim",
+    "mason-org/mason.nvim",
   },
   config = function()
     require("java").setup({
@@ -12,28 +12,9 @@ return {
         auto_install = false
       },
       jdtls = {
-        enable = true,
-        version = "1.46.1",
-      },
-      java_test = {
-        enable = true,
-        version = "0.43.1",
-      },
-      root_markers = {
-        ".git",
+        version = "1.46.0",
       },
     })
-
-    -- Ugly bubblegum workaround but necessary since something is wrong currentyle in the nvim-java and how it combines nvim-jdtls with nvim-java-test internally
-    local function get_java_bundles()
-      local mason_path = vim.fn.stdpath("data") .. "/mason/packages/"
-      local glob = vim.fn.glob
-
-      local test_jars = glob(mason_path .. "java-test/extension/server/*.jar", 1, 1)
-      local debug_jars = glob(mason_path .. "java-debug-adapter/extension/server/*.jar", 1, 1)
-
-      return vim.tbl_extend("force", debug_jars, test_jars)
-    end
 
     local keymap_opts = { noremap = true, silent = true }
 
@@ -50,9 +31,6 @@ return {
         vim.api.nvim_buf_set_keymap(bufnr, "n", "<leader>rr", "<cmd>lua vim.lsp.buf.references()<CR>", keymap_opts)
         vim.keymap.set("n", "<leader>rn", function() vim.lsp.buf.rename() end, keymap_opts)
       end,
-      init_options = {
-        bundles = get_java_bundles()
-      }
     })
   end,
 }

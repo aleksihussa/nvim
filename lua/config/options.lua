@@ -18,6 +18,7 @@ opt.smartindent = true
 opt.softtabstop = indent
 opt.tabstop = indent
 opt.shiftround = true -- use multiple of shiftwidth when indenting with "<" and ">"
+vim.diagnostic.config({ float = { border = "rounded" } })
 
 -- search
 opt.hlsearch = true   -- highlight all matches on previous search pattern
