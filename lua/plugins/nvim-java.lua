@@ -19,10 +19,6 @@ return {
         enable = true,
         version = "0.43.1",
       },
-      java_debug_adapter = {
-        enable = true,
-        version = "0.58.1",
-      },
       root_markers = {
         ".git",
       },
@@ -43,7 +39,7 @@ return {
 
     require("lspconfig").jdtls.setup({
       settings = {
-        ["java.settings.url"] ="file://" .. vim.fn.expand("~/.config/nvim/rule/java-settings.prefs")
+        ["java.settings.url"] = "file://" .. vim.fn.expand("~/.config/nvim/rule/java-settings.prefs")
       },
       on_attach = function(_, bufnr)
         vim.api.nvim_set_keymap("n", "<leader>tr", "<cmd>lua require('java').test.view_last_report()<CR>", keymap_opts)
@@ -60,4 +56,3 @@ return {
     })
   end,
 }
-

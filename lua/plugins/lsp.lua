@@ -44,7 +44,6 @@ return {
         jsonls = {},
         dockerls = {},
         bashls = {},
-        gopls = {},
         vimls = {},
         yamlls = {},
         eslint = {},
